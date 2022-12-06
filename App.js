@@ -26,50 +26,122 @@ const styles = StyleSheet.create({
   avatar: {
     height: 64,
     width: 64,
-    borderRadius: '50%',
+    borderRadius: 50,
   },
-  heading: {},
-  title: {},
+  heading: {
+    fontSize: 20,
+    fontWeight: '600',
+    paddingTop: 20,
+    paddingBottom: 12,
+    paddingHorizontal: 24,
+    color: '#02060B'
+  },
+  title: {
+    fontSize: 12,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    color: '#280D5F',
+  },
 });
 
 // App-specific components
 
 const WoofCard = (props) => (
-  <View>
-    <Avatar />
-    <Title>Todo</Title>
+  <View style={woofCardStyles.card}>
+    <Avatar url={props.avatar}/>
+    <View style={woofCardStyles.title}>
+      <Title>{props.name}</Title>
+    </View>
+    
   </View>
 );
 
 const woofCardStyles = StyleSheet.create({
-  card: {},
-  title: {},
+  card: {
+    width: 88,
+    height: 112,
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 12,
+    marginVertical: 8,
+    marginRight: 16,
+    borderColor: '#E7E3EB',
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,  
+    elevation: 5
+  },
+  title: {
+    textAlign: 'center',
+    paddingTop: 8,
+  },
 });
 
 const WoofPost = (props) => (
-  <View>
-    <Image source={{ uri: 'todo' }} />
-    <View>
-      <Text>todo</Text>
-      <Text>todo</Text>
+  <View style={woofPostStyles.layout}>
+    <Image source={{ uri: props.image }} style={woofPostStyles.image} />
+    <View style={woofPostStyles.content}>
+      <Title>{props.title}</Title>
+      <Text style={woofPostStyles.description} numberOfLines={2} ellipsizeMode='tail'>{props.description}</Text>
     </View>
   </View>
 );
 
 const woofPostStyles = StyleSheet.create({
-  layout: {},
-  image: {},
-  content: {},
-  title: {},
-  description: {},
+  layout: {
+    marginHorizontal: 24,
+    marginVertical: 8,
+    flexDirection: 'row',
+  },
+  image: {
+    flex: 1,
+    width: 120,
+    height: 80,
+    borderRadius: 12,
+  },
+  content: {
+    flex: 2,
+    padding: 12,
+  },
+  description: {
+    fontSize: 12,
+    marginTop: 4,
+    color: '#280d5f',
+  },
 });
 
 // The screen rendering everything
 const HomeScreen = () => (
   <ScrollView>
-    <Heading>Generic heading</Heading>
-    <Avatar url="https://picsum.photos/64/64" />
-    <Title>Generic title</Title>
+    <Heading>Trending Woofs</Heading>
+    <ScrollView horizontal style={{paddingHorizontal: 12}}>
+      {
+        data.woofs.map(woof => (
+        <WoofCard
+          key={woof.id}
+          name={woof.name}
+          avatar={woof.avatar}
+        />
+      ))
+      }
+    </ScrollView>
+
+    <Heading>New Woof Posts</Heading>
+      {
+          data.posts.map(post => (
+          <WoofPost
+            key={post.id}
+            image={post.image}
+            title={post.title}
+            description={post.description}
+          />
+        ))
+        }
+
   </ScrollView>
 );
 
